@@ -3,7 +3,11 @@ JRM Project
 
 to get started develping, CD into either directory and run `npm install` to get the necessary packages.
 
-`d.config.js` I added to `.gitignore` because of password scraping bots that I'm afraid of (I've had a bad experience with keys being public), so you need to write your own file called `db.config.js` and have it formatted as such:
+>To run the API, CD into `JRM-Backend` and run `node server.js`
+
+>To run the front end, CD into `jrm-front` and run `npm start`
+
+`db.config.js` I added to `.gitignore` because of password scraping bots that I'm afraid of (I've had a bad experience with keys being public), so you need to write your own file called `db.config.js` and have it formatted as such:
 ```
 module.exports = {
     HOST : "localhost",
