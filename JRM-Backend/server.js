@@ -27,6 +27,6 @@ app.get("/", (req, res) => {
 require("./routes/user.routes")(app);
 
 // set port, listen for requests
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log("server is running on port " + app.get('port'));
 })

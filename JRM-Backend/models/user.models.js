@@ -11,6 +11,7 @@ const User = function(user){                            //    | Type            
     this.account_type       = user.account_type;        //    | enum('Admin', 'Support', 'Artist', 'Commissioner') | NO    |       | NULL              | 
     this.username           = user.username;            //    | varchar(60)                                        | YES   |       | NULL              | 
     this.password           = user.password;            //    | varchar(255)                                       | NO    |       | NULL              | 
+    this.plainpass          = user.plainpass            //    | varchar(255)                                       | NO    |       | NULL              | 
     this.verified           = user.verified;            //    | tinyint(1)                                         | NO    |       | 0                 | 
     this.date_verified      = user.date_verified;       //    | datetime                                           | YES   |       | NULL              | 
     this.date_created       = user.date_created;        //    | datetime                                           | NO    |       | CURRENT_TIMESTAMP | DEFAULT_GENERATED
@@ -29,8 +30,8 @@ const User = function(user){                            //    | Type            
  */
 User.create_user = (newUser, result) =>{
 
-    var query = `INSERT INTO user (email, password) VALUES ("${newUser.email}", "${newUser.password}")`;
-
+    var query = `INSERT INTO user (email, password, plainpass) VALUES ("${newUser.email}", "${newUser.password}", "${newUser.plainpass}")`;
+    console.log(query);
     sql.query(query, (err, res)=>{
         if(err){
             console.log(`error : ${err}`);
@@ -42,6 +43,7 @@ User.create_user = (newUser, result) =>{
             id : res.insertId,
             email : newUser.email,
             password : newUser.password,
+            plainpass : newUser.plainpass,
         }
 
         console.log("created user :", response);
@@ -51,11 +53,20 @@ User.create_user = (newUser, result) =>{
 
 /**
  * 
+ * @param {*} email 
+ * @param {*} result 
+ */
+User.find_email = (email, result) =>{
+    var query = `SELECT email from user WHERE email = "${}"`
+}
+
+/**
+ * 
  * @param {Object} user 
  * @return {Object} result 
  */
 User.verify_user = (user, result) => {
-
+    var query = `UPDATE`;
 }
 
 /**
@@ -71,5 +82,31 @@ User.verify_user = (user, result) => {
 User.deactivate_user = (user, result) => {
 
 }
+
+/** Just testing curl don't mind me
+ * 
+ * @param {*} result 
+ */
+//User.get_all_users = (something, result) =>{
+//    
+//    console.log(something);
+//
+//    var query = `SELECT user_id, email, account_type, date_crated FROM user`;
+//
+//    sql.query(query, (err, res)=>{
+//        if(err){
+//            console.log(`error : ${err}`);
+//            result(err, null);
+//            return;
+//        }
+//        console.log(res);
+//        var response ={
+//            ...res
+//        }
+//
+//        console.log("get_all_users response : ", response);
+//        result(null, response);
+//    });
+//}
 
 module.exports = User;
