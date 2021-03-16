@@ -2,10 +2,9 @@ import React, {useState} from "react";
 import PropTypes from "prop-types";
 
 import UserDataService from "../services/user.service";
+import Dashboard from "./dashboard.component";
+import { Redirect } from "react-router";
 
-async function loginUser(data) {
-
-}
 
 /**
  * 
@@ -17,6 +16,7 @@ export default function Login({ setToken }) {
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
     const [message, setMessage] = useState();
+    const [redirect, setRedirect] = useState(false);
 
     /**
      * 
@@ -40,16 +40,28 @@ export default function Login({ setToken }) {
         }
 
         UserDataService.login(data).then(response =>{
-            console.log(response);
             if(response.data.message){
                 setMessage(response.data.message);
             }else{
-                console.log(response);
+                setMessage(null);
             }
+
+            if(response.data.session_id){
+                setToken(response.data);
+                setRedirect(true);
+            }else{
+                setToken(null);
+                
+            }
+            
         }).catch(e =>{
             console.log(e);
-        })
+        });
 
+    }
+
+    if(redirect){
+        return(<Redirect to='/'/>)
     }
 
     let account_login_error_message // This is set if we get a message back from the API that isn't what we want it to be. 

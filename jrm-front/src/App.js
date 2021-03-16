@@ -5,21 +5,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import CreateUser from "./components/create-user.component";
 import LoginUser from "./components/login-user.component";
 import Dashboard from "./components/dashboard.component";
-
-function setToken(userToken){
-
-}
-
-function getToken(){
-  
-}
+import useToken from "./components/useToken.component";
 
 /**
  * 
  * @returns 
  */
 function App(){
-  const token = getToken();
+  
+  const {token, setToken} = useToken();
 
   let logButton;
   let navbar_content; // make Navbar Builder
@@ -30,7 +24,7 @@ function App(){
   }else{
     // If there is a token, render the Sign out button as well as the home page
     logButton = <Link className="btn btn-outline-danger nav-item nav-link">Logout</Link>
-    navbar_content = <li></li>
+    //navbar_content = <li></li>
   }
 
   return (

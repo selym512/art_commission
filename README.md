@@ -7,15 +7,24 @@ to get started develping, CD into either directory and run `npm install` to get 
 
 >To run the front end, CD into `jrm-front` and run `npm start`
 
-`db.config.js` I added to `.gitignore` because of password scraping bots that I'm afraid of (I've had a bad experience with keys being public), so you need to write your own file called `db.config.js` and have it formatted as such:
-```
-module.exports = {
-    HOST : "localhost",
-    USER : "JRM",
-    PASS : "YOURPASSWORDHERE",
-    DATA : "JRM_Project"
-};
-```
-and placed in `JRM-Project/JRM-Backend/config`
+There is a document called JRM_DB.sql. ask rob for it to create the tables.
 
 > If you're having trouble with the error `ER_NOT_SUPPORTED_AUTH_MODE`, run the command `ALTER USER 'JRM'@'localhost' IDENTIFIED WITH mysql_native_password BY '/*YOUR PASSWORD HERE*/'`
+
+.env in the back end requires the following fields: 
+
+```
+DB_HOST=
+DB_USER=
+DB_PASS=
+DB_DATA=
+
+AUTH0_SECRET=
+AUTH0_CLIENT_ID=
+AUTH0_DOMAIN=
+AUTH0_CALLBACK_URL=
+
+COOKIE_SECRET=
+JWT_SECRET_KEY=
+
+```
