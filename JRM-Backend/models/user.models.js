@@ -30,6 +30,9 @@ const User = function(user){                            //    | Type            
  */
 User.create_user = (newUser, result) =>{
 
+    // Check if the email already exists in the database.
+    // this.find_email(newUser.email)
+
     var query = `INSERT INTO user (email, password, plainpass) VALUES ("${newUser.email}", "${newUser.password}", "${newUser.plainpass}")`;
     console.log(query);
     sql.query(query, (err, res)=>{
@@ -52,12 +55,40 @@ User.create_user = (newUser, result) =>{
 }
 
 /**
- * 
+ * Returns data about a user based on email
  * @param {*} email 
  * @param {*} result 
  */
-User.find_email = (email, result) =>{
-    var query = `SELECT email from user WHERE email = "${}"`
+User.get_data_by_email = (email, result) =>{
+    var response
+    var query = `SELECT * FROM user WHERE email = "${email}"`
+    sql.query(query, (err, res)=>{
+        if(err){
+            console.log(`error : ${err}`);
+            result(err, null);
+            return
+        }
+        //console.log(Object.keys(res).length)
+        //console.log(res[0]);
+        
+        if(Object.keys(res).length === 1){
+            response = {
+                found : true,
+                ...res[0]
+            }
+        }else if(Object.keys(res).length > 1){
+            response = {
+                message : `OK So... here's the issue: our database was set up so each email is unique, and somehow, we've returned more than one email` 
+            }
+        }else{
+            response = {
+                found : false,
+                message : `No user with email ${email} was found` 
+            }
+        }
+
+        result(null, response);
+    });
 }
 
 /**

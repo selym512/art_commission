@@ -13,11 +13,11 @@ export default function CreateUser(){
 
     const handleSubmit = e =>{
         if(!email){
-            console.log("email blank")
+            setMessage("email is required")
             return;
         }
         if(!pass){
-            console.log("pass blank")
+            setMessage("Password is required")
             return;
         }
 

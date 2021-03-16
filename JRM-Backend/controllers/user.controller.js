@@ -58,14 +58,80 @@ exports.create_user = (req, res) => {
     });
 }
 
-exports.login_user = (req, res) => {
+/**
+ * The controller for logging in a user
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+exports.login_user = async (req, res) => {
     // Validate request
     if (!req.body) {
         res.status(400).send({
             message: "Content cannot be empty"
         });
-        
     }
+
+    if(!req.body.email){
+        console.log("email empty");
+        res.status(400).send({
+            message : "email cannot be empty"
+        })
+        return;
+    }
+    if(!req.body.pass){
+        console.log("pass empty");
+        res.status(400).send({
+            message : "pass cannot be empty"
+        })
+        return;
+    }
+
+
+    var email = req.body.email;
+    var passGuess = req.body.pass;
+
+    //console.log(req.body);
+
+    // Get password based on Email
+
+    User.get_data_by_email(email, async (err, data)=>{
+        if(err) {
+            res.status(500).send({
+                message : err.message || "Some error occuared while finding the user by email"
+            })
+        }else{
+            // If there was a message, it will return a HTTP 400 with just a message for the front end to handle
+            //if(data.message){
+            //    res.send(data);
+            //}
+            //console.log(data);
+            if(data.found){
+                bcrypt.compare(passGuess, data.password, (err, res2)=>{
+                    if(err){
+                        console.log(`passGuess : ${passGuess}\ndata.password : ${data.password}`)
+                        throw err;
+                    } 
+                    // HAHAHAHAH I NAMED IT res2 BECAUSE FUCK YOU THATS WHY
+                    if(res2){
+                        /// EEHH FUCKIN MAYBE SEND A TOEKN?
+                        res.status(200).send({
+                            message : "log in successful"
+                        });
+                    }else{
+                        res.status(200).send({
+                            message : "passwords do not match"
+                        })
+                    }
+                });
+            } else {
+                res.status(200).send({
+                    message : data.message
+                })
+            }
+        }
+    });
+
 }
 
 /** The controller function for getting all users
