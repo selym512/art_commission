@@ -1,10 +1,10 @@
 import React, {useState} from "react";
+import { Redirect } from "react-router";
 import PropTypes from "prop-types";
 
-import UserDataService from "../services/user.service";
-import Dashboard from "./dashboard.component";
-import { Redirect } from "react-router";
+import useToken from "./useToken.component";
 
+import UserDataService from "../services/user.service";
 
 /**
  * 
@@ -18,6 +18,12 @@ export default function Login({ setToken }) {
     const [message, setMessage] = useState();
     const [redirect, setRedirect] = useState(false);
 
+    const {token} = useToken();
+
+    if(token){
+        return(<Redirect to='/'/>)
+    }
+    
     /**
      * 
      * @param {*} e 
@@ -61,6 +67,7 @@ export default function Login({ setToken }) {
     }
 
     if(redirect){
+        window.location.reload();
         return(<Redirect to='/'/>)
     }
 
@@ -88,7 +95,8 @@ export default function Login({ setToken }) {
                 <div class="d-flex">
                     <button onClick={handleSubmit} className="btn btn-primary mr-auto">Submit</button>
                     <button className="btn btn-outline-danger col-auto">Forgot Password</button>
-                </div>  
+                    {/** TODO : add "remember me" button to store session token in cookies. */}
+                </div>
             </div>
         </div>    
     )

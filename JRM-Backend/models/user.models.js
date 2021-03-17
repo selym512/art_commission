@@ -4,20 +4,20 @@ const sql = require('./db');
  * 
  * @param {object} user 
  */
-const User = function(user){                                        //  | Type                                                                  | Null  | Key   | Default           | Extra
-    this.user_id                    = user.user_id;                 //  | varchar(255)                                                          | NO    | PRI   | NULL              | 
-    this.session_id                 = user.session_id               //  | varchar(255)                                                          | NO    |       |                   |
-    this.date_session_id_created    = user.date_session_id_created  //  | datetime                                                              | NO    |       | NULL              |
-    this.email                      = user.email;                   //  | varchar(60)                                                           | NO    | UNI   | NULL              | 
-    this.account_type               = user.account_type;            //  | enum('Admin', 'Support', 'Artist', 'Commissioner', 'Not Confirmed')   | NO    |       | 'Not Confirmed'   | 
-    this.username                   = user.username;                //  | varchar(60)                                                           | YES   |       | NULL              | 
-    this.password                   = user.password;                //  | varchar(255)                                                          | NO    |       | NULL              | 
-    this.verified                   = user.verified;                //  | tinyint(1)                                                            | NO    |       | 0                 | 
-    this.date_verified              = user.date_verified;           //  | datetime                                                              | YES   |       | NULL              | 
-    this.date_created               = user.date_created;            //  | datetime                                                              | NO    |       | CURRENT_TIMESTAMP |
-    this.pass_last_changed          = user.pass_last_changed;       //  | datetime                                                              | YES   |       | NULL              | 
-    this.deactivated                = user.deactivated;             //  | tinyint(1)                                                            | YES   |       | 0                 | 
-    this.date_deactivated           = user.date_deactivated;        //  | datetime                                                              | YES   |       | NULL              | 
+const User = function(user){                                        //  | Type                                                                  | Null  | Default               | Unique    | Key
+    this.user_id                    = user.user_id;                 //  | varchar(255)                                                          | NO    | NULL                  | YES       | PRI
+    this.session_id                 = user.session_id               //  | varchar(255)                                                          | NO    |                       |           |
+    this.date_session_id_created    = user.date_session_id_created  //  | datetime                                                              | NO    | NULL                  |           |
+    this.email                      = user.email;                   //  | varchar(60)                                                           | NO    | NULL                  | YES       | 
+    this.account_type               = user.account_type;            //  | enum('Admin', 'Support', 'Artist', 'Commissioner', 'Not Confirmed')   | NO    | 'Not Confirmed'       |           | 
+    this.username                   = user.username;                //  | varchar(60)                                                           | YES   | NULL                  |           | 
+    this.password                   = user.password;                //  | varchar(255)                                                          | NO    | NULL                  |           | 
+    this.verified                   = user.verified;                //  | tinyint(1)                                                            | NO    | 0                     |           | 
+    this.date_verified              = user.date_verified;           //  | datetime                                                              | YES   | NULL                  |           | 
+    this.date_created               = user.date_created;            //  | datetime                                                              | NO    | CURRENT_TIMESTAMP     |           |
+    this.pass_last_changed          = user.pass_last_changed;       //  | datetime                                                              | YES   | NULL                  |           | 
+    this.deactivated                = user.deactivated;             //  | tinyint(1)                                                            | YES   | 0                     |           | 
+    this.date_deactivated           = user.date_deactivated;        //  | datetime                                                              | YES   | NULL                  |           | 
 }
 
 /** inserts a new user with just an email address and a password.
@@ -28,6 +28,7 @@ const User = function(user){                                        //  | Type  
  */
 User.create_user = (newUser, result) =>{
 
+    // TODO : this
     // Check if the email already exists in the database.
     // this.find_email(newUser.email)
 
@@ -121,7 +122,7 @@ User.get_session_id_by_user_id = (user, result) =>{
  * @param {*} user 
  * @param {*} result 
  */
-User.get_session_id_created_by_user_id = (user, result) =>{
+User.get_session_id_created_by_by_user_id = (user, result) =>{
 
 }
 
@@ -143,7 +144,7 @@ User.verify_user = (user, result) => {
  * @param {*} result 
  */
 User.get_data_by_session_id = (user, result) =>{
-    var query = `SELECT user_id, verified, username, account_type FROM user WHERE session_id=${user.session_id}`
+    var query = `SELECT user_id, email, username, account_type, verified FROM user WHERE session_id=${user.session_id}`
 
     sql.query(query, (err, res)=>{
         if(err){
@@ -168,31 +169,5 @@ User.get_data_by_session_id = (user, result) =>{
 User.deactivate_user = (user, result) => {
 
 }
-
-/** Just testing curl don't mind me
- * 
- * @param {*} result 
- */
-//User.get_all_users = (something, result) =>{
-//    
-//    console.log(something);
-//
-//    var query = `SELECT user_id, email, account_type, date_crated FROM user`;
-//
-//    sql.query(query, (err, res)=>{
-//        if(err){
-//            console.log(`error : ${err}`);
-//            result(err, null);
-//            return;
-//        }
-//        console.log(res);
-//        var response ={
-//            ...res
-//        }
-//
-//        console.log("get_all_users response : ", response);
-//        result(null, response);
-//    });
-//}
 
 module.exports = User;

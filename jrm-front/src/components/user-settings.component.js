@@ -10,7 +10,7 @@ export default function User_Settings(){
     const [username, setUsername] = useState();
     const [verified, setVerified] = useState(0);
 
-    let settings;
+    let settings, verifyButton;
 
     if(token){
         var data = {
@@ -20,17 +20,9 @@ export default function User_Settings(){
 
         UserDataService.get_data_by_session_id(data).then(async response =>{
             result = response.data[0];
-            if(result.verified == 0){
-                setVerified(0);
-            }else{
-                setVerified(1);
-            }
-
-            if(result.username !=null){
-                setUsername(result.username)
-            }else{
-                setUsername("");
-            }
+            if(result.verified) setVerified(result.verified);
+            if(result.username) setUsername(result.username);
+            if(result.account_type) setAccount_type(result.account_type);
         }).catch(e=>{
             console.log(e);
         })
@@ -41,9 +33,11 @@ export default function User_Settings(){
          */
         if(verified == 0){
             // generate button for verifying account on click
+            verifyButton =<button type="button" class="btn btn-block btn-warning btn-lg">You have not verified your account, please click here to verify it</button>
         }
-        settings = <div>
-            <p>settings page soon</p>
+
+        settings = <div className="">
+            {verifyButton}
         </div>
     }else{
         // Redirect client to main page if there is no token stored in the session

@@ -8,27 +8,19 @@ const User = require("../models/user.models");
  */
 exports.create_user = (req, res) => {
     // Validate request
-    if (!req.body) {
-        res.status(400).send({
-            message: "Content cannot be empty"
-        });
-    }
+    if (!req.body) res.status(400).send({ message: "Content cannot be empty" });
     
+    // These should also be handled in the client
     if(!req.body.email){
-        console.log("email empty");
-        res.status(200).send({
-            message : "email cannot be empty"
-        })
+        res.status(200).send({ message : "email cannot be empty" });
+        return; // I'm not sure if we still nede these returns
+    }
+    if(!req.body.pass){
+        res.status(200).send({ message : "pass cannot be empty" });
         return;
     }
 
-    if(!req.body.pass){
-        console.log("pass empty");
-        res.status(200).send({
-            message : "pass cannot be empty"
-        })
-        return;
-    }
+    // TODO : check if email alrady exists in the database
 
     // HASH PASSWORD HERE
     bcrypt.hash(req.body.pass, 10, (err, hash) => {
@@ -42,13 +34,8 @@ exports.create_user = (req, res) => {
 
         // INSERT USER HERE
         User.create_user(user, (err, data) => {
-            if (err) {
-                res.status(500).send({
-                    message: err.message || "Some error occured while creating the user."
-                });
-            } else {
-                res.send(data); // Returns user ID, user email, and user password (hashed)
-            }
+            if (err) res.status(500).send({ message: err.message || "Some error occured while creating the user." });
+            res.send(data); // Returns user ID, user email, and user password (hashed) (Why?)
         });
     });
 }
@@ -60,21 +47,14 @@ exports.create_user = (req, res) => {
  */
 exports.login_user = async (req, res) => {
     // Validate request
-    if (!req.body) {
-        res.status(400).send({
-            message: "Content cannot be empty"
-        });
-    }
+    if (!req.body) res.status(400).send({message: "Content cannot be empty"});
+
     if(!req.body.email){
-        res.status(400).send({
-            message : "email cannot be empty"
-        })
+        res.status(200).send({ message : "email cannot be empty" });
         return;
     }
     if(!req.body.pass){
-        res.status(400).send({
-            message : "pass cannot be empty"
-        })
+        res.status(200).send({ message : "pass cannot be empty" });
         return;
     }
 
@@ -82,7 +62,8 @@ exports.login_user = async (req, res) => {
     var passGuess = req.body.pass;
 
     User.get_data_by_email(email, async (err, data)=>{
-        if(err) res.status(500).send({message : err.message || "Some error occuared while finding the user by email"})
+        if(err) res.status(500).send({message : err.message || "Some error occuared while finding the user by email"});
+        
         if(data.found){ // if a user was found
             // compare the password
             bcrypt.compare(passGuess, data.password, (err, match)=>{
@@ -97,7 +78,7 @@ exports.login_user = async (req, res) => {
                     }
                     // store it in the database, 
                     User.set_session_id_by_user_id(user, async (err, data)=>{
-                        if (err) res.status(500).send({message : err.message || "SOme error occured while setting the session ID"})
+                        if (err) res.status(500).send({message : err.message || "Some error occured while setting the session ID"})
                         // return it to the client
                         res.status(200).send({session_id : session_id});
                     })
@@ -107,11 +88,8 @@ exports.login_user = async (req, res) => {
                     })
                 }
             });
-        } else { // if a user was NOT found
-            res.status(200).send({
-                message : data.message
-            })
-        }
+        } else res.status(200).send({ message : data.message });  // if a user was NOT found
+        
     });
 
 }
@@ -122,13 +100,8 @@ exports.login_user = async (req, res) => {
  * @param {*} res 
  */
 exports.data_s_id = (req,res) =>{
-    if(!req.body){
-        res.status(400).send({message: "Content cannot be empty"});
-    }
-
-    if(!req.body.session_id){
-        res.status(400).send({message: "User not logged in"});
-    }
+    if(!req.body) res.status(400).send({message: "Content cannot be empty"});
+    if(!req.body.session_id) res.status(400).send({message: "User not logged in"});
 
     var session_id = '"' +req.body.session_id+'"';
 
@@ -138,35 +111,6 @@ exports.data_s_id = (req,res) =>{
 
     User.get_data_by_session_id(user, (err, data)=>{
         if(err) res.status(500).send({message : err || "Some error occured retrieving data"});
-
         res.status(200).send(data);
     });
 }
-
-/** 
- * The controller function for getting all users
- * @param {*} req 
- * @param {*} res 
- */
-//exports.get_all_users = (req, res) =>{
-//    //Validate request
-//    if (!req.body) {
-//        res.status(400).send({
-//            message: "Content cannot be empty"
-//        });
-//    }
-//
-//    var something = req.body.q;
-//
-//    User.get_all_users(something, (err, data) =>{
-//        if(err){
-//            res.status(500).send({
-//                message : err.message || "Some error occured while creating the user"
-//            });
-//        } else{
-//            console.log(data);
-//            res.send(data);
-//        }
-//    })
-//
-//}
