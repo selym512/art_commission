@@ -8,7 +8,12 @@ const login = data =>{
     return http.post("/user/login_user", data);
 }
 
+const get_data_by_session_id = data =>{
+    return http.post("/user/data_s_id", data);
+}
+
 export default {
     create,
-    login
+    login,
+    get_data_by_session_id,
 };

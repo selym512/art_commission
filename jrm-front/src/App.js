@@ -2,9 +2,12 @@ import React, { useState  } from "react";
 import {Link,Switch,Route} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import Navbar from "./components/navbar.component";
+import Dashboard from "./components/dashboard.component";
 import CreateUser from "./components/create-user.component";
 import LoginUser from "./components/login-user.component";
-import Dashboard from "./components/dashboard.component";
+import Settings from "./components/user-settings.component";
+
 import useToken from "./components/useToken.component";
 
 /**
@@ -14,41 +17,18 @@ import useToken from "./components/useToken.component";
 function App(){
   
   const {token, setToken} = useToken();
-
-  let logButton;
-  let navbar_content; // make Navbar Builder
-
-  if(!token){
-    // If there is no token, render the Sign up/Log in button
-    logButton = <Link to={"/create"} className="btn btn-success nav-item nav-link">Login/Join</Link>
-  }else{
-    // If there is a token, render the Sign out button as well as the home page
-    logButton = <Link className="btn btn-outline-danger nav-item nav-link">Logout</Link>
-    //navbar_content = <li></li>
-  }
+  
+  // TODO : Write code to wipe token from session if time has ran out.
 
   return (
     <div>
-      <nav className="navbar navbar-expand navbar-dark bg-dark">
-        <a href="/" className="navbar-brand">
-          JRM-Project
-        </a>
-        <div className="navbar-nav mr-auto">
-          {/**Render the nav bar based on the user type */}
-        </div>
-        {navbar_content}
-        {logButton}
-        {/** Make sure these two swap based on whether or not they are logged in*/}
-      </nav>
+      <Navbar />
       <div className="container mt-3">
         <Switch>
           <Route exact path={["/", "dashboard"]} component={Dashboard}/>{/* I want to say this is what is rendered under default? Just get a home page and render it based on the user?*/}
-          <Route exact path="/create" >
-            <CreateUser/>
-          </Route>
-          <Route exact path="/login">
-            <LoginUser setToken={setToken}/>
-          </Route>
+          <Route exact path="/create" ><CreateUser/></Route>
+          <Route exact path="/login"><LoginUser setToken={setToken}/></Route>
+          <Route exact path="/settings"><Settings/></Route>
         </Switch>
       </div>
       <div class="alert alert-danger">

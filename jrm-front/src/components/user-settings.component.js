@@ -1,17 +1,16 @@
 import React, {useState} from "react";
-import PropTypes from "prop-types";
-
+import {Redirect} from "react-router-dom";
 import useToken from "./useToken.component";
 import UserDataService from "../services/user.service";
 
-export default function Dashboard(){
+export default function User_Settings(){
     
     const {token, setToken} = useToken();
     const [account_type, setAccount_type] = useState();
     const [username, setUsername] = useState();
     const [verified, setVerified] = useState(0);
 
-    let dashboard, verified_info, username_greeting
+    let settings;
 
     if(token){
         var data = {
@@ -32,36 +31,26 @@ export default function Dashboard(){
             }else{
                 setUsername("");
             }
-
-            setAccount_type(result.account_type); // Generate dashboard based on account type
-
         }).catch(e=>{
             console.log(e);
         })
 
+        /**
+         * Verifying the account should be the first thing to happen.
+         * I need to review the flowchart for the other things.
+         */
         if(verified == 0){
-            verified_info = <h2>your account is not verified, please verify it</h2>
+            // generate button for verifying account on click
         }
-
-        if(username !==""){
-            
-        }else{
-            username_greeting = "Hello, Mr. Noname"
-        }
-
-        dashboard = <div>
-            <h1>{username_greeting}</h1>
-            {verified_info}
-            <p>Content for user based on account</p>
+        settings = <div>
+            <p>settings page soon</p>
         </div>
     }else{
-        dashboard = <div>
-        <h1>JRM-Project logged out page</h1>
-        <p>Message prompting user to log in / create account</p>
-    </div>
+        // Redirect client to main page if there is no token stored in the session
+        return(<Redirect to='/'/>)
     }
 
     return(
-        dashboard
+        settings
     );
 }

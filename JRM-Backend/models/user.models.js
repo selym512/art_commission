@@ -114,17 +114,45 @@ User.get_session_id_by_user_id = (user, result) =>{
     var query = `SELECT session_id FROM user WHERE`;
 }
 
+/** Returns date of when a user id's session was created.
+ * 
+ * The controller should handle whether or not the current time is past the date of when the session_id was created
+ * It should be erased, which should cause a user to log out.
+ * @param {*} user 
+ * @param {*} result 
+ */
 User.get_session_id_created_by_user_id = (user, result) =>{
 
 }
 
-/**
+/** Verifies the user
  * 
  * @param {Object} user 
  * @return {Object} result 
  */
 User.verify_user = (user, result) => {
     var query = `UPDATE`;
+}
+
+/** Returns certain values based on session ID
+ * 
+ * the values returned are:
+ * user_id,verified,username,account_type
+ * 
+ * @param {*} user 
+ * @param {*} result 
+ */
+User.get_data_by_session_id = (user, result) =>{
+    var query = `SELECT user_id, verified, username, account_type FROM user WHERE session_id=${user.session_id}`
+
+    sql.query(query, (err, res)=>{
+        if(err){
+            console.log(`error : ${err}`)
+            result(err, null)
+            return;
+        }
+        result(null, res);
+    })
 }
 
 /**
