@@ -21,7 +21,7 @@ exports.create_user = (req, res) => {
     }
 
     // TODO : check if email alrady exists in the database
-
+    
     // HASH PASSWORD HERE
     bcrypt.hash(req.body.pass, 10, (err, hash) => {
         if (err) throw err;
@@ -99,11 +99,11 @@ exports.login_user = async (req, res) => {
  * @param {*} req 
  * @param {*} res 
  */
-exports.data_s_id = (req,res) =>{
+exports.data_by_session_id = (req,res) =>{
     if(!req.body) res.status(400).send({message: "Content cannot be empty"});
     if(!req.body.session_id) res.status(400).send({message: "User not logged in"});
 
-    var session_id = '"' +req.body.session_id+'"';
+    var session_id = req.body.session_id;
 
     const user = new User({
         session_id : session_id,
@@ -113,4 +113,58 @@ exports.data_s_id = (req,res) =>{
         if(err) res.status(500).send({message : err || "Some error occured retrieving data"});
         res.status(200).send(data);
     });
+}
+
+/** The controller for verifying a user
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.verify_user = (req, res) =>{
+    if(!req.body) res.status(400).send({message : "Content cannot be empty"});
+    if(!req.body.user_id) res.status(400).send({message : "No user ID in body"});
+
+    const user = new User({
+        user_id : req.body.user_id,
+    });
+
+    User.verify_user(user, (err, data)=>{
+        if(err) res.status(500).send({message : err || "Some error occured while verifying user"});
+        res.status(200).send(data);
+    })
+}
+
+exports.set_account_type = (req, res) =>{
+    if(!req.body) res.status(400).send({message : "Content cannot be empty"});
+    if(!req.body.user_id) res.status(400).send({message : "No user_id in body"});
+    if(!req.body.account_type) res.status(400).send({message : "No account_type in body"});
+
+    const user = new User({
+        user_id : req.body.user_id,
+        account_type : req.body.account_type,
+    });
+
+    User.set_account_type(user, (err, data)=>{
+        if(err) res.status(500).send({message : err || "Some error occured while setting account type"});
+        res.status(200).send(data);
+    })
+}
+
+/** The controller for deactivating a user
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.deactivate_user = (req, res) =>{
+    if(!req.body) res.status(400).send({message : "Content cannot be empty"});
+    if(!req.body.user_id) res.status(400).send({message : "No user ID in body"});
+
+    const user = new User({
+        user_id : req.body.user_id,
+    });
+
+    User.deactivate_user(user, (err, data)=>{
+        if(err) res.status(500).send({message : err || "Some error occured while deactivating user"});
+        res.status(200).send(data);
+    })
 }

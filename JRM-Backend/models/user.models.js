@@ -33,7 +33,6 @@ User.create_user = (newUser, result) =>{
     // this.find_email(newUser.email)
 
     var query = `INSERT INTO user (user_id, email, password) VALUES ("${newUser.user_id}","${newUser.email}", "${newUser.password}")`;
-    //console.log(query);
     sql.query(query, (err, res)=>{
         if(err){
             console.log(`error : ${err}`);
@@ -89,12 +88,12 @@ User.get_data_by_email = (email, result) =>{
     });
 }
 
-/**
- * Sets the session token, based on the user ID
+/** Sets the session token, based on the user ID
+ *
  * @param {*} user 
  * @param {*} result 
  */
-User.set_session_id_by_user_id = (user, result) =>{
+ User.set_session_id_by_user_id = (user, result) =>{
     var query = `UPDATE user SET session_id="${user.session_id}", date_session_id_created=NOW() WHERE user_id="${user.user_id}"`;
     sql.query(query, (err, res)=>{
         if(err){
@@ -106,7 +105,28 @@ User.set_session_id_by_user_id = (user, result) =>{
     });
 }
 
-/**
+/** Returns certain values based on session ID
+ * 
+ * the values returned are:
+ * user_id,verified,username,account_type
+ * 
+ * @param {*} user 
+ * @param {*} result 
+ */
+ User.get_data_by_session_id = (user, result) =>{
+    var query = `SELECT user_id, email, username, account_type, date_created, verified FROM user WHERE session_id="${user.session_id}"`
+
+    sql.query(query, (err, res)=>{
+        if(err){
+            console.log(`error : ${err}`)
+            result(err, null)
+            return;
+        }
+        result(null, res);
+    })
+}
+
+/** I have no idea why I pre made this
  * 
  * @param {*} user 
  * @param {*} result 
@@ -132,42 +152,43 @@ User.get_session_id_created_by_by_user_id = (user, result) =>{
  * @return {Object} result 
  */
 User.verify_user = (user, result) => {
-    var query = `UPDATE`;
-}
-
-/** Returns certain values based on session ID
- * 
- * the values returned are:
- * user_id,verified,username,account_type
- * 
- * @param {*} user 
- * @param {*} result 
- */
-User.get_data_by_session_id = (user, result) =>{
-    var query = `SELECT user_id, email, username, account_type, verified FROM user WHERE session_id=${user.session_id}`
-
+    var query = `UPDATE user SET verified = NOT verified, date_verified=NOW() WHERE user_id = "${user.user_id}"`;
     sql.query(query, (err, res)=>{
         if(err){
-            console.log(`error : ${err}`)
-            result(err, null)
+            console.log(`error : ${err}`);
+            result(err, null);
             return;
         }
         result(null, res);
     })
 }
 
-/**
- * There will be more calls here, deactivate_user will be last because thats
- * how baldy likes 
+/** Sets user account type
+ * 
+ * @param {*} user 
+ * @return {*} result 
  */
+User.set_account_type = (user, result) =>{
+    var query = `UPDATE user SET account_type="${user.account_type}" WHERE user_id="${user.user_id}"`;
+    console.log(query);
+    sql.query(query, (err, res)=>{
+        if(err){
+            console.log(`error : ${err}`);
+            result(err, null);
+            return;
+        }
+        result(null, res);
+    });
+}
 
-/**
+
+/** Deactivates the user
  * 
  * @param {Object} user 
  * @return {Object} result 
  */
 User.deactivate_user = (user, result) => {
-
+    var query = `UPDATE user SET deactivated = NOT deactivated, date_deactivated=NOW() WHERE user_id="${user.user_id}"`
 }
 
 module.exports = User;

@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
+import {Jumbotron} from "react-bootstrap";
 
 import useToken from "./useToken.component";
 import UserDataService from "../services/user.service";
@@ -49,15 +50,18 @@ export default function Dashboard(){
             username_greeting = "Hello, Mr. Noname"
         }
 
-        dashboard = <div>
+        dashboard = <Jumbotron>
             <h1>{username_greeting}</h1>
             {verified_info}
             <p>Content for user based on account</p>
-        </div>
+        </Jumbotron>
     }else{
         dashboard = <div>
-        <h1>JRM-Project logged out page</h1>
-        <p>Message prompting user to log in / create account</p>
+            <Jumbotron>
+                <h1>JRM-Project logged out page</h1>
+                <p>Message prompting user to log in / create account</p>
+            </Jumbotron>
+
     </div>
     }
 

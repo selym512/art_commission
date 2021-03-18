@@ -5,7 +5,7 @@ import {Gear, Search as SearchIcon} from "react-bootstrap-icons";
 import useToken from "./useToken.component";
 
 import UserDataService from "../services/user.service";
-
+import ApiService from "../services/general_api.service";
 
 /**Genrates a nav bar based on account type
  * There is an issue where the navbar only rerenders after a refresh.
@@ -17,9 +17,20 @@ export default function Navbar(){
     const [account_type, setAccount_type] = useState();
     const [searchValue, setSearchValue] = useState();
     const [account_verified, setAccount_verified] = useState();
+    const [api_conn_status, setAPI_conn_status] = useState(false);
 
     // Left to right
-    let navbar,navbar_content, settingsButton, searchBar, logButton;
+    let navbar,api_conn_badge, navbar_content, settingsButton, searchBar, logButton;
+
+    ApiService.get_status(data).then(async response =>{
+        if(response.data.message){
+            setAPI_conn_status(true);
+        }else{
+            setAPI_conn_status(true);
+        }
+    });
+
+    api_conn_status ? api_conn_badge =<span class="badge badge-success">api</span> : api_conn_badge =<span class="badge badge-danger">api</span>
 
     if(token){
         var data = {
@@ -42,7 +53,7 @@ export default function Navbar(){
                     verifyButton = <div></div>
                 }
                 // find a way to have the user select an account type
-                navbar_content = <div className="navbar-nav mr-auto"><li className="nav-item nav-link">Select Account Type</li></div>
+                navbar_content = <div className="navbar-nav mr-auto"><li className="nav-item nav-link">Select Account Type</li></div> // maybe have this redirect to settings?
                 break;
             case 'Admin':
                 // TODO : come up with navbar stuff for admin
@@ -75,13 +86,13 @@ export default function Navbar(){
         settingsButton = <Link to={"/settings"} className="text-secondary nav-item nav-link"><Gear /></Link>
         logButton = <Link to={"/logout"} className="btn btn-outline-danger nav-item nav-link">Logout</Link>
     }else{
-        console.log("bang!");
         //setAccount_type();
         logButton = <Link to={"/create"} className="btn btn-success nav-item nav-link">Login/Join</Link>
     }
 
     navbar = <nav className = "navbar navbar-expand navbar-dark bg-dark">
         <a href="/" className="navbar-brand"> JRM-Project</a>
+        {api_conn_badge}
         {navbar_content}
         {searchBar}
         {settingsButton}

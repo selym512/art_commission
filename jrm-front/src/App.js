@@ -20,6 +20,8 @@ function App(){
   const {token, setToken} = useToken();
   
   // TODO : Write code to wipe token from session if time has ran out.
+  // TODO : Probably replace session with localStorage or cookie?
+  // TODO : Write code to wipe token from session if not found in database.
 
   return (
     <div>
