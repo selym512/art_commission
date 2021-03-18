@@ -24,7 +24,7 @@ function App(){
   return (
     <div>
       <Navbar />
-      <div className="container mt-4 mb-4 border">
+      <div className="border">
         <Switch>
           <Route exact path={["/", "dashboard"]} component={Dashboard}/>{/* I want to say this is what is rendered under default? Just get a home page and render it based on the user?*/}
           <Route exact path="/create" ><CreateUser/></Route>

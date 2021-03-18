@@ -50,7 +50,7 @@ export default function Navbar(){
             case 'Support' :
                 // TODO : come up with navbar stuff for support
                 break;
-            case 'Commissioner': // TODO : check if this spelling was correct
+            case 'Commissioner':
                 navbar_content = <div className="navbar-nav mr-auto">
                     <li className="nav-item nav-link">Conversations</li> {/** TODO : Add a little notification badge */}
                 </div>
@@ -63,7 +63,7 @@ export default function Navbar(){
                     </div>
                 </form>
                 break;
-            case 'Aritst': // TODO : fix the spelling of this in database
+            case 'Artist':
                 navbar_content = <div className="navbar-nav mr-auto">
                     <li className="nav-item nav-link">Modules</li>
                     <li className="nav-item nav-link">Conversations</li> {/** TODO : Add a little notification badge */}
@@ -81,7 +81,7 @@ export default function Navbar(){
     }
 
     navbar = <nav className = "navbar navbar-expand navbar-dark bg-dark">
-        <a href="/" className="navbar-brand"> JRM PRoject</a>
+        <a href="/" className="navbar-brand"> JRM-Project</a>
         {navbar_content}
         {searchBar}
         {settingsButton}

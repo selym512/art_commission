@@ -33,7 +33,7 @@ User.create_user = (newUser, result) =>{
     // this.find_email(newUser.email)
 
     var query = `INSERT INTO user (user_id, email, password) VALUES ("${newUser.user_id}","${newUser.email}", "${newUser.password}")`;
-    console.log(query);
+    //console.log(query);
     sql.query(query, (err, res)=>{
         if(err){
             console.log(`error : ${err}`);
@@ -47,7 +47,7 @@ User.create_user = (newUser, result) =>{
             password : newUser.password,
         }
 
-        console.log("created user :", response);
+        //console.log("created user :", response);
         result(null, response);
     });
 }
@@ -95,7 +95,7 @@ User.get_data_by_email = (email, result) =>{
  * @param {*} result 
  */
 User.set_session_id_by_user_id = (user, result) =>{
-    var query = `UPDATE user SET session_id:="${user.session_id}", date_session_id_created=NOW() WHERE user_id="${user.user_id}"`;
+    var query = `UPDATE user SET session_id="${user.session_id}", date_session_id_created=NOW() WHERE user_id="${user.user_id}"`;
     sql.query(query, (err, res)=>{
         if(err){
             console.log(`error : ${err}`);
