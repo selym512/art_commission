@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Redirect} from "react-router-dom";
-import {Button, Card} from "react-bootstrap";
+import {Button, Card, CardGroup, Col, Container, Row} from "react-bootstrap";
 
 import useToken from "./useToken.component";
 import UserDataService from "../services/user.service";
@@ -88,10 +88,10 @@ export default function User_Settings(){
         switch(account_type){
             case 'Not Confirmed':
                 //make it look like two cards, asshole
-                accountTypeContainer = <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <div class="card-group">
+                accountTypeContainer = <Container>
+                    <Row>
+                        <Col>
+                            <CardGroup>
                                 <Card>
                                     <Card.Header as="h4">Artist</Card.Header>
                                     <Card.Title as="h5">Create art for commissions</Card.Title>
@@ -112,10 +112,10 @@ export default function User_Settings(){
                                     </Card.Text>
                                     <Button variant="btn btn-outline-primary" onClick={() => handleSetAccountType("Commissioner")}>Become a Commissioner</Button>
                                 </Card>
-                          </div>
-                        </div>
-                    </div>
-                </div>
+                          </CardGroup>
+                        </Col>
+                    </Row>
+                </Container>
                 break;
             case 'Artist':
                 accountTypeContainer = <h3 class="text-center bad" data-toggle="tooltip" title="contact support if you wish to change your account type">

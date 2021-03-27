@@ -5,7 +5,13 @@ import {Jumbotron} from "react-bootstrap";
 import useToken from "./useToken.component";
 import UserDataService from "../services/user.service";
 
-export default function Dashboard(){
+/**
+ * 
+ * @param {*} props 
+ * @returns 
+ */
+export default function Dashboard(props){
+    //console.log(props);
     
     const {token, setToken} = useToken();
     const [account_type, setAccount_type] = useState();

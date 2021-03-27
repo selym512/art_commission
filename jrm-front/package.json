@@ -9,6 +9,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "bootstrap-icons": "^1.4.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "formik": "^2.2.6",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.2",
