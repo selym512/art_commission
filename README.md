@@ -1,6 +1,5 @@
 # JRM-Project
-
-to get started develping, CD into either directory and run `npm install` to get the necessary packages.
+To get started develping, CD into either directory and run `npm install` to get the necessary packages.
 
 >To run the API, CD into `JRM-Backend` and run `node server.js`
 
@@ -8,12 +7,13 @@ to get started develping, CD into either directory and run `npm install` to get 
 
 There is a document called JRM_DB.sql. ask rob for it to create the tables.
 
-.env in the back end requires the following fields: 
+If it says you are missing the .env file in `JRM-Backend`, create a file called
+`.env` and add the following fields,
 ```
-PORT=
+PORT=%Your desired port number, this doesn't really matter as long as its not 3000%
 
-DB_HOST=
-DB_USER=
-DB_PASS=
-DB_DATA=
+DB_HOST=%For the time being it should be local host%
+DB_USER=%The user for the database, which is seen in JRM_DB.sql%
+DB_PASS=%The password for the user, which is seen in JRM_DB.sql%
+DB_DATA=%The database to be used, which should be JRM_Project I think%
 ```
