@@ -23,6 +23,7 @@ export default function NavbarComponent(props){
     // Left to right
     let navbar,api_conn_badge, messages_badge, navbar_content, searchBar, settingsButton, logButton;
 
+    // TODO : If we cannot connect to the database, automatically log out the user
     ApiService.get_status().then(async response =>{
         if(response.data.message){
             setAPI_conn_status(true);
@@ -63,7 +64,7 @@ export default function NavbarComponent(props){
                 // TODO : come up with navbar stuff for support
                 break;
             case 'Commissioner':
-                messages_badge = <Nav.Item><Button variant="outline-secondary"><Envelope/></Button></Nav.Item>
+                messages_badge = <Link to={"/messages"}><Nav.Item><Button variant="outline-secondary"><Envelope/></Button></Nav.Item></Link>
 
                 navbar_content = <Nav className="mr-auto">
                     {messages_badge}
@@ -79,7 +80,7 @@ export default function NavbarComponent(props){
                 </Form>
                 break;
             case 'Artist':
-                messages_badge = <Nav.Item><Button variant="outline-secondary"><Envelope/></Button></Nav.Item>
+                messages_badge = <Link to={"/messages"}><Nav.Item><Button variant="outline-secondary"><Envelope/></Button></Nav.Item></Link>
                 navbar_content = <Nav className="mr-auto">
                     {messages_badge}
                     <Nav.Item className="nav-link">Commissions</Nav.Item>
