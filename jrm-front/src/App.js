@@ -9,7 +9,9 @@ import LoginUser from "./components/login-user.component";
 import LogoutUser from "./components/logout-user.component";
 import Settings from "./components/user-settings.component";
 import CommissionModule from "./components/commissionModule.component";
-import Messages from "./components/messages.component";
+import Messages from "./components/messenger/Dashboard";
+
+import {ContactsProvider} from './contexts/ContactsProvider'
 
 import useToken from "./components/useToken.component";
 import UserDataService from "./services/user.service";
@@ -59,7 +61,9 @@ function App(){
           <Route exact path="/logout"><LogoutUser/></Route>
           <Route exact path="/settings"><Settings  /*user={user}*//></Route>
           <Route exact path="/commissionModule"><CommissionModule/></Route>
-          <Route exact path="/messages"> <Messages /></Route>
+          
+          <Route exact path="/messages"><ContactsProvider> <Messages /></ContactsProvider></Route>
+          
         </Switch>
       </div>
       <div className="container-fluid alert alert-danger text-center">

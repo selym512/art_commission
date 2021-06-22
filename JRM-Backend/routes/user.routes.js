@@ -21,5 +21,5 @@ module.exports = app => {
     app.post("/user/set_account_type", users.set_account_type);
 
     // Get all users
-    //app.get("/user/get_all_users", users.get_all_users);
+    app.get("/user/get_all_users", users.get_all_users);
 }

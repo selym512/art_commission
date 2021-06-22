@@ -192,3 +192,7 @@ User.deactivate_user = (user, result) => {
 }
 
 module.exports = User;
+
+User.get_all_users = (user, result) =>{
+    var query = `SELECT * from users;`
+}

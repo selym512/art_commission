@@ -7,6 +7,8 @@ To get started develping, CD into either directory and run `npm install` to get 
 
 There is a document called JRM_DB.sql. ask rob for it to create the tables.
 
+START_SERVER= sudo /etc/init.d/mysql start
+
 If it says you are missing the .env file in `JRM-Backend`, create a file called
 `.env` and add the following fields,
 ```

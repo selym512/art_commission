@@ -10,7 +10,7 @@ const conn = mysql.createConnection({
 
 // Open MySQL connection
 conn.connect(error => {
-    if(error) throw error;
+    if(error) {console.log(error); throw error ;}
     console.log(`Successfully connected to ${dbConfig.HOST}.${dbConfig.DATA}`);
 });
 
